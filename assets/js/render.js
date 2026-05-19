@@ -27,11 +27,9 @@ window.PromptAtlasRender = (function () {
   function renderFilters(levels, models, state) {
     var categoryContainer = document.getElementById('categoryFilters');
     var levelContainer = document.getElementById('levelFilters');
-    var modelContainer = document.getElementById('modelFilters');
 
     categoryContainer.innerHTML = '';
     levelContainer.innerHTML = '';
-    modelContainer.innerHTML = '';
 
     var clearCategory = createButton('전체 카테고리', 'category', state.selectedCategory === 'All');
     clearCategory.dataset.filterValue = 'All';
@@ -53,17 +51,6 @@ window.PromptAtlasRender = (function () {
       var button = createButton(level, 'level', active);
       button.dataset.filterValue = level;
       levelContainer.appendChild(button);
-    });
-
-    var clearModel = createButton('전체 모델', 'model', state.selectedModel === 'All');
-    clearModel.dataset.filterValue = 'All';
-    modelContainer.appendChild(clearModel);
-
-    models.forEach(function (model) {
-      var active = state.selectedModel === model;
-      var button = createButton(model, 'model', active);
-      button.dataset.filterValue = model;
-      modelContainer.appendChild(button);
     });
   }
 
@@ -95,13 +82,46 @@ window.PromptAtlasRender = (function () {
       level.className = 'card-pill';
       level.textContent = item.level;
 
-      var model = document.createElement('span');
-      model.className = 'card-pill';
-      model.textContent = item.model;
+      meta.appendChild(category);
+      meta.appendChild(level);
+      card.appendChild(title);
+      card.appendChild(description);
+      card.appendChild(meta);
+      container.appendChild(card);
+    });
+  }
+
+  function renderWorkflowCards(items, selectedId) {
+    var container = document.getElementById('workflowCardGrid');
+    if (!container) return;
+    container.innerHTML = '';
+
+    items.forEach(function (item) {
+      var card = document.createElement('article');
+      card.className = 'card' + (item.id === selectedId ? ' active' : '');
+      card.dataset.cardId = item.id;
+
+      var title = document.createElement('h3');
+      title.className = 'card-title';
+      title.textContent = item.title;
+
+      var description = document.createElement('p');
+      description.className = 'card-description';
+      description.textContent = item.description;
+
+      var meta = document.createElement('div');
+      meta.className = 'card-meta';
+
+      var category = document.createElement('span');
+      category.className = 'card-pill';
+      category.textContent = item.category;
+
+      var level = document.createElement('span');
+      level.className = 'card-pill';
+      level.textContent = item.level;
 
       meta.appendChild(category);
       meta.appendChild(level);
-      meta.appendChild(model);
       card.appendChild(title);
       card.appendChild(description);
       card.appendChild(meta);
@@ -129,12 +149,10 @@ window.PromptAtlasRender = (function () {
 
     var badges = document.getElementById('detailBadges');
     badges.innerHTML = '';
-    [item.level, item.model].forEach(function (value) {
-      var badge = document.createElement('span');
-      badge.className = 'badge';
-      badge.textContent = value;
-      badges.appendChild(badge);
-    });
+    var badge = document.createElement('span');
+    badge.className = 'badge';
+    badge.textContent = item.level;
+    badges.appendChild(badge);
 
     var sources = document.getElementById('detailSources');
     sources.innerHTML = '';
@@ -158,6 +176,7 @@ window.PromptAtlasRender = (function () {
     renderSidebar: renderSidebar,
     renderFilters: renderFilters,
     renderCards: renderCards,
+    renderWorkflowCards: renderWorkflowCards,
     renderDetail: renderDetail,
     renderSummary: renderSummary,
     renderEmptyState: renderEmptyState

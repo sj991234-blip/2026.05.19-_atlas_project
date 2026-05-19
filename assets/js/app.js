@@ -3,7 +3,6 @@ window.PromptAtlasApp = (function (data, render) {
     categories: data.categories,
     selectedCategory: 'All',
     selectedLevel: 'All',
-    selectedModel: 'All',
     searchTerm: '',
     selectedItemId: null
   };
@@ -23,9 +22,19 @@ window.PromptAtlasApp = (function (data, render) {
 
     document.getElementById('categoryFilters').addEventListener('click', handleFilterClick);
     document.getElementById('levelFilters').addEventListener('click', handleFilterClick);
-    document.getElementById('modelFilters').addEventListener('click', handleFilterClick);
 
     document.getElementById('sidebarNav').addEventListener('click', function (event) {
+      var button = event.target.closest('button');
+      if (!button || !button.dataset.category) return;
+      state.selectedCategory = button.dataset.category;
+      state.searchTerm = '';
+      document.getElementById('searchInput').value = '';
+      render.renderSidebar(state.categories, state.selectedCategory);
+      render.renderFilters(data.levels, data.models, state);
+      refresh();
+    });
+
+    document.getElementById('sidebarWorkflow').addEventListener('click', function (event) {
       var button = event.target.closest('button');
       if (!button || !button.dataset.category) return;
       state.selectedCategory = button.dataset.category;
@@ -42,6 +51,16 @@ window.PromptAtlasApp = (function (data, render) {
       state.selectedItemId = card.dataset.cardId;
       refresh();
     });
+
+    var workflowCardGrid = document.getElementById('workflowCardGrid');
+    if (workflowCardGrid) {
+      workflowCardGrid.addEventListener('click', function (event) {
+        var card = event.target.closest('[data-card-id]');
+        if (!card) return;
+        state.selectedItemId = card.dataset.cardId;
+        refresh();
+      });
+    }
 
     document.getElementById('copyPromptButton').addEventListener('click', function () {
       var selected = getSelectedItem();
@@ -63,9 +82,6 @@ window.PromptAtlasApp = (function (data, render) {
     if (type === 'level') {
       state.selectedLevel = value;
     }
-    if (type === 'model') {
-      state.selectedModel = value;
-    }
 
     render.renderFilters(data.levels, data.models, state);
     refresh();
@@ -77,16 +93,16 @@ window.PromptAtlasApp = (function (data, render) {
     return data.items.filter(function (item) {
       var matchesCategory = state.selectedCategory === 'All' || item.category === state.selectedCategory;
       var matchesLevel = state.selectedLevel === 'All' || item.level === state.selectedLevel;
-      var matchesModel = state.selectedModel === 'All' || item.model === state.selectedModel;
-      var matchesSearch = !term || [item.title, item.description, item.prompt, item.category, item.model, item.level, item.tags.join(' '), item.sources.join(' ')].some(function (field) {
+      var matchesSearch = !term || [item.title, item.description, item.prompt, item.category, item.level, item.tags.join(' '), item.sources.join(' ')].some(function (field) {
         return field.toLowerCase().includes(term);
       });
-      return matchesCategory && matchesLevel && matchesModel && matchesSearch;
+      return matchesCategory && matchesLevel && matchesSearch;
     });
   }
 
   function refresh() {
     var filteredItems = getFilteredItems();
+    render.renderWorkflowCards(data.items.filter(function (item) { return item.category === '워크플로우'; }), state.selectedItemId);
     render.renderCards(filteredItems, state.selectedItemId);
     render.renderSummary(filteredItems.length);
     render.renderEmptyState(filteredItems.length === 0);
