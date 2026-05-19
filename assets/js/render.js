@@ -129,6 +129,40 @@ window.PromptAtlasRender = (function () {
     });
   }
 
+  function generateExamplePrompt(prompt) {
+    var sampleMap = {
+      role: '연구 기획자',
+      task: '시장 분석 보고서 작성',
+      context: '신제품 출시 배경',
+      format: '표와 요약',
+      example: '예시 결과',
+      constraint: '500자 이내',
+      topic: 'AI 기반 추천 시스템',
+      audience: '제품 기획자',
+      content: '프로젝트 개요와 일정',
+      objective: '핵심 성과 지표 도출',
+      draft: '첫 번째 초안 텍스트',
+      population: '성인 환자',
+      intervention: '새로운 치료법',
+      comparison: '기존 치료법',
+      outcome: '효과 평가',
+      time: '6개월',
+      user_question: '이 제품의 핵심 기능을 설명해 주세요.',
+      request_text: '사용자 대상 소개 문장',
+      presentation_topic: 'AI 도입 전략'
+    };
+
+    var used = false;
+    var result = prompt.replace(/\{([^}]+)\}|\[([^\]]+)\]/g, function (match, key1, key2) {
+      var key = (key1 || key2 || '').trim().toLowerCase();
+      var sample = sampleMap[key] || '예시 텍스트';
+      used = true;
+      return sample;
+    });
+
+    return used ? result : '프롬프트 예시 입력은 템플릿 변수({})를 포함해야 생성됩니다.';
+  }
+
   function renderDetail(item) {
     var detailContent = document.getElementById('detailContent');
     var detailEmpty = document.getElementById('detailEmpty');
@@ -145,6 +179,7 @@ window.PromptAtlasRender = (function () {
     document.getElementById('detailTitle').textContent = item.title;
     document.getElementById('detailDescription').textContent = item.description;
     document.getElementById('detailPrompt').textContent = item.prompt;
+    document.getElementById('detailExample').textContent = generateExamplePrompt(item.prompt);
     document.getElementById('detailNotes').textContent = item.notes;
 
     var badges = document.getElementById('detailBadges');
