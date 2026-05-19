@@ -35,10 +35,10 @@ body {
 
 .page-shell {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: minmax(280px, 300px) minmax(0, 1fr);
   gap: 32px;
   padding: 32px;
-  max-width: 1560px;
+  max-width: 1440px;
   margin: 0 auto;
 }
 
@@ -323,22 +323,22 @@ body {
 }
 
 .section-header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
   gap: 12px;
-  align-items: flex-end;
-  margin-bottom: 18px;
+  margin-bottom: 22px;
 }
 
 .section-header h2 {
   margin: 0;
-  font-size: 1.3rem;
+  font-size: 1.32rem;
 }
 
 .section-header p {
   margin: 0;
   color: var(--muted);
   font-size: 0.95rem;
+  max-width: 62ch;
+  line-height: 1.7;
 }
 
 .card-section {
@@ -522,18 +522,70 @@ pre {
   box-shadow: var(--shadow);
 }
 
+.document-source-list {
+  display: grid;
+  gap: 26px;
+}
+
 .document-source-item {
-  margin-bottom: 28px;
+  margin: 0;
 }
 
-.document-source-item:last-child {
-  margin-bottom: 0;
+.document-source-details {
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--surface-muted);
 }
 
-.document-source-item h3 {
-  margin: 0 0 14px;
-  font-size: 1.18rem;
+.document-source-details[open] {
+  background: var(--surface);
+}
+
+.document-source-details summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--accent);
+  padding: 18px 22px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  list-style: none;
+}
+
+.document-source-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.document-source-details summary::before {
+  content: '▸';
+  display: inline-block;
+  margin-right: 10px;
+  transition: transform 0.2s ease;
+}
+
+.document-source-details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.document-source-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.document-source-title {
+  font-size: 1rem;
   color: var(--text);
+}
+
+.document-source-tag {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.document-source-body {
+  padding: 22px;
 }
 
 .document-source pre {
@@ -541,11 +593,12 @@ pre {
   word-break: break-word;
   background: #0f172a;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  max-height: 540px;
+  max-height: 520px;
   overflow: auto;
   padding: 20px;
   font-size: 0.95rem;
-  line-height: 1.7;
+  line-height: 1.75;
+  border-radius: 20px;
 }
 
 @media (max-width: 1180px) {
@@ -662,6 +715,7 @@ pre {
   }
 
   .section-header {
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
   }
