@@ -4,6 +4,10 @@
     {
       "src": "index.html",
       "use": "@now/static"
+    },
+    {
+      "src": "assets/**/*",
+      "use": "@now/static"
     }
   ],
   "routes": [
