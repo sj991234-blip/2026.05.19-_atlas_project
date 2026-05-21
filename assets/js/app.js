@@ -8,10 +8,47 @@ window.PromptAtlasApp = (function (data, render) {
   };
 
   function init() {
-    render.renderSidebar(state.categories, state.selectedCategory);
+    // render.renderSidebar will be triggered only when a top-category is selected
     render.renderFilters(data.levels, data.models, state);
+    renderTopCategoryButtons(state.categories);
     attachEventListeners();
     refresh();
+  }
+
+  function renderTopCategoryButtons(categories) {
+    var container = document.getElementById('topCategoryButtons');
+    if (!container) return;
+    container.innerHTML = '';
+    categories.forEach(function (category) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'top-cat-button';
+      btn.textContent = category;
+      btn.dataset.category = category;
+      btn.addEventListener('click', function () {
+        state.selectedCategory = category;
+        state.searchTerm = '';
+        var searchInput = document.getElementById('searchInput');
+        if (searchInput) searchInput.value = '';
+        showSidebarCategory(category);
+        render.renderFilters(data.levels, data.models, state);
+        refresh();
+      });
+      container.appendChild(btn);
+    });
+  }
+
+  function showSidebarCategory(category) {
+    var container = document.getElementById('sidebarNav');
+    if (!container) return;
+    container.classList.remove('hidden');
+    container.innerHTML = '';
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = category;
+    button.dataset.category = category;
+    button.className = 'active';
+    container.appendChild(button);
   }
 
   function attachEventListeners() {

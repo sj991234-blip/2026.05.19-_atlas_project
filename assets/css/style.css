@@ -76,6 +76,30 @@ body {
   gap: 12px;
 }
 
+.sidebar-nav.hidden {
+  display: none;
+}
+
+.top-cats {
+  display:flex;
+  gap:8px;
+  margin-top:8px;
+  flex-wrap:wrap;
+}
+
+.top-cats .top-cat-button {
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+  padding: 6px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.88rem;
+}
+
+.top-cats .top-cat-button:hover {
+  background: var(--accent-soft);
+}
+
 .sidebar-nav button {
   width: 100%;
   border: none;
