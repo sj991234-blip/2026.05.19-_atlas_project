@@ -15,42 +15,66 @@ window.PromptAtlasApp = (function (data, render) {
   }
 
   function attachEventListeners() {
-    document.getElementById('searchInput').addEventListener('input', function (event) {
-      state.searchTerm = event.target.value.trim();
-      refresh();
-    });
+    var searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', function (event) {
+        state.searchTerm = event.target.value.trim();
+        refresh();
+      });
+    }
 
-    document.getElementById('categoryFilters').addEventListener('click', handleFilterClick);
-    document.getElementById('levelFilters').addEventListener('click', handleFilterClick);
+    var categoryFilters = document.getElementById('categoryFilters');
+    if (categoryFilters) categoryFilters.addEventListener('click', handleFilterClick);
 
-    document.getElementById('sidebarNav').addEventListener('click', function (event) {
-      var button = event.target.closest('button');
-      if (!button || !button.dataset.category) return;
-      state.selectedCategory = button.dataset.category;
-      state.searchTerm = '';
-      document.getElementById('searchInput').value = '';
-      render.renderSidebar(state.categories, state.selectedCategory);
-      render.renderFilters(data.levels, data.models, state);
-      refresh();
-    });
+    var levelFilters = document.getElementById('levelFilters');
+    if (levelFilters) levelFilters.addEventListener('click', handleFilterClick);
 
-    document.getElementById('sidebarWorkflow').addEventListener('click', function (event) {
-      var button = event.target.closest('button');
-      if (!button || !button.dataset.category) return;
-      state.selectedCategory = button.dataset.category;
-      state.searchTerm = '';
-      document.getElementById('searchInput').value = '';
-      render.renderSidebar(state.categories, state.selectedCategory);
-      render.renderFilters(data.levels, data.models, state);
-      refresh();
-    });
+    var sidebarNav = document.getElementById('sidebarNav');
+    if (sidebarNav) {
+      sidebarNav.addEventListener('click', function (event) {
+        var button = event.target.closest('button');
+        if (!button || !button.dataset.category) return;
+        state.selectedCategory = button.dataset.category;
+        state.searchTerm = '';
+        if (searchInput) searchInput.value = '';
+        render.renderSidebar(state.categories, state.selectedCategory);
+        render.renderFilters(data.levels, data.models, state);
+        refresh();
+      });
+    }
 
-    document.getElementById('cardGrid').addEventListener('click', function (event) {
-      var card = event.target.closest('[data-card-id]');
-      if (!card) return;
-      state.selectedItemId = card.dataset.cardId;
-      refresh();
-    });
+    var sidebarWorkflow = document.getElementById('sidebarWorkflow');
+    if (sidebarWorkflow) {
+      sidebarWorkflow.addEventListener('click', function (event) {
+        var button = event.target.closest('button');
+        if (!button || !button.dataset.category) return;
+        state.selectedCategory = button.dataset.category;
+        state.searchTerm = '';
+        if (searchInput) searchInput.value = '';
+        render.renderSidebar(state.categories, state.selectedCategory);
+        render.renderFilters(data.levels, data.models, state);
+        refresh();
+      });
+    }
+
+    var cardGrid = document.getElementById('cardGrid');
+    if (cardGrid) {
+      cardGrid.addEventListener('click', function (event) {
+        var card = event.target.closest('[data-card-id]');
+        if (!card) return;
+        state.selectedItemId = card.dataset.cardId;
+        refresh();
+      });
+
+      cardGrid.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          var card = event.target.closest('[data-card-id]');
+          if (!card) return;
+          state.selectedItemId = card.dataset.cardId;
+          refresh();
+        }
+      });
+    }
 
     var workflowCardGrid = document.getElementById('workflowCardGrid');
     if (workflowCardGrid) {
@@ -60,13 +84,25 @@ window.PromptAtlasApp = (function (data, render) {
         state.selectedItemId = card.dataset.cardId;
         refresh();
       });
+
+      workflowCardGrid.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          var card = event.target.closest('[data-card-id]');
+          if (!card) return;
+          state.selectedItemId = card.dataset.cardId;
+          refresh();
+        }
+      });
     }
 
-    document.getElementById('copyPromptButton').addEventListener('click', function () {
-      var selected = getSelectedItem();
-      if (!selected) return;
-      copyText(selected.prompt);
-    });
+    var copyPromptButton = document.getElementById('copyPromptButton');
+    if (copyPromptButton) {
+      copyPromptButton.addEventListener('click', function () {
+        var selected = getSelectedItem();
+        if (!selected) return;
+        copyText(selected.prompt);
+      });
+    }
   }
 
   function handleFilterClick(event) {
@@ -103,7 +139,6 @@ window.PromptAtlasApp = (function (data, render) {
   function refresh() {
     var filteredItems = getFilteredItems();
     render.renderWorkflowCards(data.items.filter(function (item) { return item.category === '워크플로우'; }), state.selectedItemId);
-    render.renderCards(filteredItems, state.selectedItemId);
     render.renderSummary(filteredItems.length);
     render.renderEmptyState(filteredItems.length === 0);
 

@@ -62,6 +62,9 @@ window.PromptAtlasRender = (function () {
       var card = document.createElement('article');
       card.className = 'card' + (item.id === selectedId ? ' active' : '');
       card.dataset.cardId = item.id;
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
+      card.setAttribute('aria-selected', item.id === selectedId ? 'true' : 'false');
 
       var title = document.createElement('h3');
       title.className = 'card-title';
@@ -100,6 +103,9 @@ window.PromptAtlasRender = (function () {
       var card = document.createElement('article');
       card.className = 'card' + (item.id === selectedId ? ' active' : '');
       card.dataset.cardId = item.id;
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
+      card.setAttribute('aria-selected', item.id === selectedId ? 'true' : 'false');
 
       var title = document.createElement('h3');
       title.className = 'card-title';

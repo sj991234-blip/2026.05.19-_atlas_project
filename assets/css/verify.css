@@ -1,0 +1,67 @@
+/* Styles specific to verify UI, built on top of existing variables */
+.verify-shell {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  padding: 28px;
+  max-width: 1200px;
+  margin: 0 auto 48px;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+.input-panel h2,
+.result-panel h2 { margin: 0 0 12px; }
+
+.form-group { margin-bottom: 14px; }
+.form-group label { display:block; font-weight:600; margin-bottom:6px; }
+.hint { margin:0 0 6px; color:var(--muted); font-size:0.92rem; }
+
+textarea {
+  width:100%;
+  min-height:96px;
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  font-size:0.95rem;
+  font-family: inherit;
+  resize:vertical;
+}
+
+select { width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border); }
+
+.form-row { display:flex; gap:12px; align-items:flex-end; }
+.form-group.small { flex:1; }
+.action-col { display:flex; align-items:center; }
+
+.primary { background:var(--accent); color:white; border:none; padding:10px 14px; border-radius:12px; cursor:pointer; }
+.primary:hover { background:#1d4ed8; }
+
+.input-error { color:#dc2626; margin-top:8px; }
+
+.score-box { margin:14px 0; padding:12px; border-radius:12px; background:var(--surface-strong); }
+.score { font-size:1.6rem; font-weight:800; color:var(--accent); margin-top:6px; }
+.score-note { color:var(--muted); margin:6px 0 0; }
+
+.checklist .diagnostics { list-style:none; padding:0; margin:8px 0; }
+.diagnostics li { padding:8px 0; border-bottom:1px dashed var(--border); }
+
+.before-after .ba-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; }
+.ba-box { background:var(--surface-muted); padding:12px; border-radius:12px; }
+.code-block { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; white-space:pre-wrap; word-break:break-word; background:var(--code-bg); color:var(--code-text); padding:12px; border-radius:8px; min-height:120px; }
+
+.muted { color:var(--muted); }
+.beta-note { margin:8px 0 12px; color:var(--muted); }
+
+.history { margin-top:18px; }
+
+@media (max-width: 920px) {
+  .verify-shell { grid-template-columns:1fr; padding:18px; }
+  .before-after .ba-grid { grid-template-columns:1fr; }
+}

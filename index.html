@@ -90,7 +90,7 @@
         <section class="card-section" aria-label="Prompt cards">
           <div class="section-header">
             <h2>프롬프트 모음</h2>
-            <p id="resultsSummary"></p>
+            <p id="resultsSummary" aria-live="polite"></p>
           </div>
           <div class="card-grid" id="cardGrid"></div>
           <div class="empty-state" id="emptyState" hidden>
@@ -872,6 +872,18 @@ P(계획): [작성]
   </div>
   </div>
 </section>
+    
+    <section class="beta-links" style="grid-column:1/-1; margin-top:18px;">
+      <div class="panel" style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <strong>향후 기능 / 베타</strong>
+          <p class="muted" style="margin:4px 0 0;">프롬프트 검증 UI(베타)를 미리 체험하려면 아래로 이동하세요.</p>
+        </div>
+        <div>
+          <a class="primary" href="verify.html" style="text-decoration:none;">프롬프트 검증 UI로 이동</a>
+        </div>
+      </div>
+    </section>
     </main>
   </div>
 
