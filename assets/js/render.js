@@ -135,6 +135,79 @@ window.PromptAtlasRender = (function () {
     });
   }
 
+  function renderVerificationCards(items, selectedId) {
+    var container = document.getElementById('verificationCardGrid');
+    if (!container) return;
+    container.innerHTML = '';
+
+    if (!items || items.length === 0) {
+      container.innerHTML = '<div class="empty-state"><p>검증 관련 프롬프트가 없습니다.</p></div>';
+      return;
+    }
+
+    items.forEach(function (item) {
+      var card = document.createElement('article');
+      card.className = 'card verification-card' + (item.id === selectedId ? ' active' : '');
+      card.dataset.cardId = item.id;
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
+      card.setAttribute('aria-selected', item.id === selectedId ? 'true' : 'false');
+
+      var title = document.createElement('h3');
+      title.className = 'card-title';
+      title.textContent = item.title;
+
+      var description = document.createElement('p');
+      description.className = 'card-description';
+      description.textContent = item.description;
+
+      var meta = document.createElement('div');
+      meta.className = 'card-meta';
+
+      var badge = document.createElement('span');
+      badge.className = 'card-pill';
+      badge.textContent = item.level;
+      meta.appendChild(badge);
+
+      card.appendChild(title);
+      card.appendChild(description);
+      card.appendChild(meta);
+      container.appendChild(card);
+    });
+  }
+
+  function renderCategoryAccordion(items, categories, selectedCategory) {
+    var container = document.getElementById('categoryAccordion');
+    if (!container) return;
+    container.innerHTML = '';
+
+    categories.forEach(function (category) {
+      var item = items.find(function (it) { return it.category === category; }) || {};
+      var isActive = selectedCategory === category;
+
+      var block = document.createElement('article');
+      block.className = 'accordion-item' + (isActive ? ' active' : '');
+
+      var header = document.createElement('button');
+      header.type = 'button';
+      header.className = 'accordion-trigger';
+      header.dataset.categoryName = category;
+      header.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+      header.textContent = category;
+
+      var description = document.createElement('p');
+      description.className = 'accordion-description';
+      description.textContent = item.description || '해당 카테고리의 대표 프롬프트를 확인해 보세요.';
+      if (!isActive) {
+        description.hidden = true;
+      }
+
+      block.appendChild(header);
+      block.appendChild(description);
+      container.appendChild(block);
+    });
+  }
+
   function generateExamplePrompt(prompt) {
     var sampleMap = {
       role: '연구 기획자',
@@ -224,6 +297,8 @@ window.PromptAtlasRender = (function () {
     renderFilters: renderFilters,
     renderCards: renderCards,
     renderWorkflowCards: renderWorkflowCards,
+    renderVerificationCards: renderVerificationCards,
+    renderCategoryAccordion: renderCategoryAccordion,
     renderDetail: renderDetail,
     renderSummary: renderSummary,
     renderEmptyState: renderEmptyState

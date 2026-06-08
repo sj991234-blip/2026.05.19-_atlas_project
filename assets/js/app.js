@@ -189,6 +189,25 @@ window.PromptAtlasApp = (function (data, render) {
       });
     }
 
+    var categoryAccordion = document.getElementById('categoryAccordion');
+    if (categoryAccordion) {
+      categoryAccordion.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-category-name]');
+        if (!button) return;
+        var category = button.dataset.categoryName;
+        state.selectedCategory = category;
+        state.searchTerm = '';
+        var searchInput = document.getElementById('searchInput');
+        if (searchInput) searchInput.value = '';
+        var firstItem = data.items.find(function (item) { return item.category === category; });
+        if (firstItem) {
+          state.selectedItemId = firstItem.id;
+        }
+        render.renderFilters(data.levels, data.models, state);
+        refresh();
+      });
+    }
+
     var copyPromptButton = document.getElementById('copyPromptButton');
     if (copyPromptButton) {
       copyPromptButton.addEventListener('click', async function () {
@@ -259,7 +278,9 @@ window.PromptAtlasApp = (function (data, render) {
 
   function refresh() {
     var filteredItems = getFilteredItems();
+    render.renderCategoryAccordion(data.items, state.categories, state.selectedCategory);
     render.renderWorkflowCards(data.items.filter(function (item) { return item.category === '워크플로우'; }), state.selectedItemId);
+    render.renderVerificationCards(data.items.filter(function (item) { return item.category === '검증'; }), state.selectedItemId);
     render.renderSummary(filteredItems.length);
     render.renderEmptyState(filteredItems.length === 0);
 
