@@ -236,10 +236,16 @@ html.dark body::before {
 }
 
 .content-header {
+  min-width: 0;
+  display: grid;
+  gap: 18px;
+}
+
+.content-header .eyebrow {
   letter-spacing: 0.16em;
   font-size: 0.78rem;
   text-transform: uppercase;
-  min-width: 0;
+  margin: 0;
 }
 
 .content-header > div {
@@ -247,15 +253,17 @@ html.dark body::before {
 }
 
 .content-header h1 {
-  margin: 12px 0 14px;
-  font-size: clamp(2.4rem, 3vw, 3.4rem);
+  margin: 12px 0 10px;
+  font-size: clamp(2.2rem, 3vw, 3.4rem);
   line-height: 1.05;
+  letter-spacing: 0.02em;
 }
 
 .lead {
   margin: 0;
   color: var(--muted);
-  max-width: 58ch;
+  max-width: 60ch;
+  line-height: 1.7;
 }
 
 .theme-toggle-panel {
