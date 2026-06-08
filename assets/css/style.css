@@ -286,12 +286,60 @@ html.dark body::before {
 }
 
 .lead {
-  margin: 0;
+  margin: 0 auto;
   color: var(--muted);
-  max-width: 60ch;
-  line-height: 1.7;
+  max-width: 56ch;
+  line-height: 1.8;
   overflow-wrap: anywhere;
   word-break: break-word;
+  text-align: left;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.hero-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  width: 100%;
+  max-width: 980px;
+  margin: 24px auto 0;
+}
+
+.hero-feature-card {
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 18px;
+  text-align: left;
+  min-height: 130px;
+}
+
+.hero-feature-card h3 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+
+.hero-feature-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.secondary {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+}
+
+.secondary:hover {
+  background: var(--surface-strong);
 }
 
 .theme-toggle-panel {
@@ -309,6 +357,23 @@ html.dark body::before {
 .document-source,
 .beta-links {
   padding: 24px;
+}
+
+.search-panel {
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.search-panel {
+  display: grid;
+  gap: 20px;
+}
+
+.filter-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .category-accordion {
@@ -397,7 +462,6 @@ html.dark body::before {
     min-width: 0;
     overflow-wrap: anywhere;
     justify-items: center;
-    text-align: center;
   }
 
   .section-header h2 {
@@ -405,12 +469,15 @@ html.dark body::before {
     margin: 0;
     letter-spacing: 0.04em;
     word-break: break-word;
+    text-align: center;
   }
 
   .section-header p {
     margin: 0;
     color: var(--muted);
     line-height: 1.6;
+    max-width: 68ch;
+    text-align: left;
     word-break: break-word;
   }
 
