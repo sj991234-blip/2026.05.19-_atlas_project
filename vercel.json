@@ -6,17 +6,24 @@
       "use": "@vercel/static"
     },
     {
-      "src": "assets/**/*",
+      "src": "verify.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "document-source.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "assets/**",
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
+      "handle": "filesystem"
     },
     {
-      "src": "/(.*)",
+      "src": "/.*",
       "dest": "/index.html"
     }
   ]
