@@ -18,8 +18,8 @@
         <p class="sidebar-workflow-title">워크플로우 바로가기</p>
         <button type="button" class="workflow-nav-button" data-category="워크플로우">워크플로우 항목 보기</button>
       </div>
-      <div class="sidebar-verify" style="display:flex;">
-        <a class="workflow-nav-button" href="verify.html" rel="noopener" onclick="window.open('verify.html','promptVerify','width=1000,height=800'); return false;" style="display:inline-block; text-decoration:none; text-align:center;">프롬프트 검증(베타)</a>
+      <div class="sidebar-verify">
+        <a class="workflow-nav-button js-open-verify" href="verify.html" rel="noopener">프롬프트 검증(베타)</a>
       </div>
       <div class="sidebar-foot">
         <p>주의가 분산되지 않는 실전 중심형 가이드를 찾는 프롬프트 엔지니어를 위한 디자인입니다.</p>
@@ -34,7 +34,7 @@
           <h1>프롬프트 아틀라스</h1>
           <p class="lead">실무 기획, 데이터 분석, 문서 자동화, 검증 루프, 면접 포트폴리오까지 아우르는 AI 프롬프트 라이브러리입니다.</p>
           <div class="hero-actions">
-            <a class="primary" href="verify.html" rel="noopener" onclick="window.open('verify.html','promptVerify','width=1000,height=800'); return false;">프롬프트 검증(베타)</a>
+            <a class="primary js-open-verify" href="verify.html" rel="noopener">프롬프트 검증(베타)</a>
             <a class="secondary" href="document-source.html">원본 문서 보기</a>
           </div>
           <div class="hero-features">
@@ -54,6 +54,7 @@
           <div class="theme-toggle-panel">
             <button id="themeToggle" class="theme-toggle-button" type="button">Dark Mode</button>
           </div>
+          <div id="appError" class="app-error" hidden role="alert" aria-live="assertive"></div>
         </div>
       </header>
 
@@ -183,7 +184,7 @@
     <article class="info-card">
       <h3>프롬프트 검증 바로가기</h3>
       <p>검증 페이지에서는 검증 절차, 평가 기준, 개선 가이드라인을 카드 형태로 확인할 수 있습니다.</p>
-      <a class="primary" href="verify.html" rel="noopener" onclick="window.open('verify.html','promptVerify','width=1000,height=800'); return false;">검증 UI 열기</a>
+      <a class="primary js-open-verify" href="verify.html" rel="noopener">검증 UI 열기</a>
     </article>
     <article class="info-card">
       <h3>원본 문서 참고</h3>

@@ -28,8 +28,8 @@ window.PromptVerify = (function () {
     updateDummyResult(situation, prompt, model);
   }
 
-  // TODO: Track A - 데이터 기반 규칙 검증 로직 연동 예정
-  // TODO: Track B - LLM API 연동 검증 로직 연동 예정
+  // 현재 검증 UI는 베타 데모 상태입니다.
+  // 추후 데이터 기반 검증 및 LLM API 연동으로 실제 결과를 제공할 계획입니다.
   function updateDummyResult(situation, prompt, model) {
     // 간단한 더미 로직: 프롬프트 길이에 따라 결과를 나눔
     var len = prompt.length;

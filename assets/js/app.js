@@ -26,10 +26,12 @@ window.PromptAtlasApp = (function (data, render) {
       .then(function (res) { return res.json(); })
       .then(function (json) {
         window.PromptAtlasData = json;
+        clearAppError();
         cb(json);
       })
       .catch(function (err) {
         console.error('Failed to load PromptAtlas data', err);
+        showAppError('프롬프트 데이터를 불러오는 데 실패했습니다. 페이지를 새로고침하거나 나중에 다시 시도하세요.');
         cb(window.PromptAtlasData || { categories: [], levels: [], models: [], items: [] });
       });
   }
@@ -82,6 +84,38 @@ window.PromptAtlasApp = (function (data, render) {
     container.appendChild(button);
   }
 
+  function getAppErrorElement() {
+    return document.getElementById('appError');
+  }
+
+  function showAppError(message) {
+    var errorElement = getAppErrorElement();
+    if (!errorElement) return;
+    errorElement.textContent = message;
+    errorElement.hidden = false;
+  }
+
+  function clearAppError() {
+    var errorElement = getAppErrorElement();
+    if (!errorElement) return;
+    errorElement.textContent = '';
+    errorElement.hidden = true;
+  }
+
+  function openVerifyPopup() {
+    window.open('verify.html', 'promptVerify', 'width=1000,height=800');
+  }
+
+  function bindVerifyLinks() {
+    var links = document.querySelectorAll('.js-open-verify');
+    links.forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        openVerifyPopup();
+      });
+    });
+  }
+
   function hideSidebar() {
     var container = document.getElementById('sidebarNav');
     if (!container) return;
@@ -97,6 +131,8 @@ window.PromptAtlasApp = (function (data, render) {
         refresh();
       });
     }
+
+    bindVerifyLinks();
 
     var categoryFilters = document.getElementById('categoryFilters');
     if (categoryFilters) categoryFilters.addEventListener('click', handleFilterClick);
@@ -217,7 +253,12 @@ window.PromptAtlasApp = (function (data, render) {
           }, 2000);
         } catch (err) {
           console.error('클립보드 복사에 실패했습니다:', err);
-          alert('복사에 실패했습니다. 브라우저 보안 설정을 확인해주세요.');
+          copyPromptButton.innerHTML = '복사 실패';
+          copyPromptButton.style.color = '#dc2626';
+          setTimeout(function () {
+            copyPromptButton.innerHTML = originalText;
+            copyPromptButton.style.color = '';
+          }, 2000);
         }
       });
     }
