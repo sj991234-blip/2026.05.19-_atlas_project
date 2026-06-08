@@ -1,6 +1,7 @@
 window.PromptAtlasApp = (function (data, render) {
+  data = data || window.PromptAtlasData || null;
   var state = {
-    categories: data.categories,
+    categories: (data && data.categories) || [],
     selectedCategory: 'All',
     selectedLevel: 'All',
     searchTerm: '',
@@ -8,11 +9,29 @@ window.PromptAtlasApp = (function (data, render) {
   };
 
   function init() {
-    // render.renderSidebar will be triggered only when a top-category is selected
-    render.renderFilters(data.levels, data.models, state);
-    renderTopCategoryButtons(state.categories);
-    attachEventListeners();
-    refresh();
+    ensureData(function (loaded) {
+      data = loaded;
+      state.categories = data.categories || [];
+      // render.renderSidebar will be triggered only when a top-category is selected
+      render.renderFilters(data.levels || [], data.models || [], state);
+      renderTopCategoryButtons(state.categories);
+      attachEventListeners();
+      refresh();
+    });
+  }
+
+  function ensureData(cb) {
+    if (window.PromptAtlasData) return cb(window.PromptAtlasData);
+    fetch('./assets/data/prompt-atlas.json')
+      .then(function (res) { return res.json(); })
+      .then(function (json) {
+        window.PromptAtlasData = json;
+        cb(json);
+      })
+      .catch(function (err) {
+        console.error('Failed to load PromptAtlas data', err);
+        cb(window.PromptAtlasData || { categories: [], levels: [], models: [], items: [] });
+      });
   }
 
   function renderTopCategoryButtons(categories) {
@@ -25,12 +44,24 @@ window.PromptAtlasApp = (function (data, render) {
       btn.className = 'top-cat-button';
       btn.textContent = category;
       btn.dataset.category = category;
+      btn.setAttribute('aria-pressed', 'false');
       btn.addEventListener('click', function () {
-        state.selectedCategory = category;
-        state.searchTerm = '';
+        var currently = state.selectedCategory;
         var searchInput = document.getElementById('searchInput');
-        if (searchInput) searchInput.value = '';
-        showSidebarCategory(category);
+        // Toggle: if same category clicked again, deselect and hide sidebar
+        if (currently === category) {
+          state.selectedCategory = 'All';
+          if (searchInput) searchInput.value = '';
+          hideSidebar();
+        } else {
+          state.selectedCategory = category;
+          if (searchInput) searchInput.value = '';
+          showSidebarCategory(category);
+        }
+        // update aria-pressed on buttons
+        Array.prototype.forEach.call(container.querySelectorAll('.top-cat-button'), function (b) {
+          b.setAttribute('aria-pressed', b.dataset.category === state.selectedCategory ? 'true' : 'false');
+        });
         render.renderFilters(data.levels, data.models, state);
         refresh();
       });
@@ -49,6 +80,13 @@ window.PromptAtlasApp = (function (data, render) {
     button.dataset.category = category;
     button.className = 'active';
     container.appendChild(button);
+  }
+
+  function hideSidebar() {
+    var container = document.getElementById('sidebarNav');
+    if (!container) return;
+    container.classList.add('hidden');
+    container.innerHTML = '';
   }
 
   function attachEventListeners() {
@@ -134,10 +172,34 @@ window.PromptAtlasApp = (function (data, render) {
 
     var copyPromptButton = document.getElementById('copyPromptButton');
     if (copyPromptButton) {
-      copyPromptButton.addEventListener('click', function () {
-        var selected = getSelectedItem();
-        if (!selected) return;
-        copyText(selected.prompt);
+      copyPromptButton.addEventListener('click', async function () {
+        var targetId = copyPromptButton.getAttribute('data-target');
+        var targetElement = targetId ? document.getElementById(targetId) : null;
+        if (!targetElement) return;
+
+        var textToCopy = targetElement.innerText;
+        var originalText = copyPromptButton.innerHTML;
+
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(textToCopy);
+          } else {
+            fallbackCopy(textToCopy);
+          }
+
+          copyPromptButton.innerHTML = '✅ 복사 완료!';
+          copyPromptButton.style.color = '#10b981';
+          copyPromptButton.style.fontWeight = '600';
+
+          setTimeout(function () {
+            copyPromptButton.innerHTML = originalText;
+            copyPromptButton.style.color = '';
+            copyPromptButton.style.fontWeight = '';
+          }, 2000);
+        } catch (err) {
+          console.error('클립보드 복사에 실패했습니다:', err);
+          alert('복사에 실패했습니다. 브라우저 보안 설정을 확인해주세요.');
+        }
       });
     }
   }
@@ -162,12 +224,15 @@ window.PromptAtlasApp = (function (data, render) {
 
   function getFilteredItems() {
     var term = state.searchTerm.toLowerCase();
-
-    return data.items.filter(function (item) {
+    var items = (data && data.items) || [];
+    return items.filter(function (item) {
       var matchesCategory = state.selectedCategory === 'All' || item.category === state.selectedCategory;
       var matchesLevel = state.selectedLevel === 'All' || item.level === state.selectedLevel;
-      var matchesSearch = !term || [item.title, item.description, item.prompt, item.category, item.level, item.tags.join(' '), item.sources.join(' ')].some(function (field) {
-        return field.toLowerCase().includes(term);
+      var hay = [item.title, item.description, item.prompt, item.category, item.level];
+      if (Array.isArray(item.tags)) hay.push(item.tags.join(' '));
+      if (Array.isArray(item.sources)) hay.push(item.sources.join(' '));
+      var matchesSearch = !term || hay.some(function (field) {
+        return (field || '').toString().toLowerCase().includes(term);
       });
       return matchesCategory && matchesLevel && matchesSearch;
     });
@@ -189,16 +254,6 @@ window.PromptAtlasApp = (function (data, render) {
 
   function getSelectedItem() {
     return data.items.find(function (item) { return item.id === state.selectedItemId; }) || null;
-  }
-
-  function copyText(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).catch(function () {
-        fallbackCopy(text);
-      });
-    } else {
-      fallbackCopy(text);
-    }
   }
 
   function fallbackCopy(text) {

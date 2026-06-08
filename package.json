@@ -1,0 +1,30 @@
+{
+  "name": "project_2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "npm run lint:js && npm run lint:css",
+    "lint:js": "eslint assets/js",
+    "lint:css": "stylelint \"assets/css/**/*.css\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sj991234-blip/2026.05.19-_atlas_project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sj991234-blip/2026.05.19-_atlas_project/issues"
+  },
+  "homepage": "https://github.com/sj991234-blip/2026.05.19-_atlas_project#readme",
+  "devDependencies": {
+    "eslint": "^10.4.1",
+    "stylelint": "^17.13.0",
+    "stylelint-config-standard": "^40.0.0",
+    "stylelint-order": "^8.1.1"
+  }
+}

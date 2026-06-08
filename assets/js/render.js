@@ -197,11 +197,17 @@ window.PromptAtlasRender = (function () {
 
     var sources = document.getElementById('detailSources');
     sources.innerHTML = '';
-    item.sources.forEach(function (source) {
+    if (Array.isArray(item.sources)) {
+      item.sources.forEach(function (source) {
+        var li = document.createElement('li');
+        li.textContent = source;
+        sources.appendChild(li);
+      });
+    } else if (item.sources) {
       var li = document.createElement('li');
-      li.textContent = source;
+      li.textContent = String(item.sources);
       sources.appendChild(li);
-    });
+    }
   }
 
   function renderSummary(total) {
