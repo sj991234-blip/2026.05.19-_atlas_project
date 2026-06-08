@@ -58,6 +58,24 @@ body {
   overflow-x: hidden;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  text-align: center;
+}
+
+main,
+.content,
+.verify-shell,
+.panel,
+.search-panel,
+.workflow-panel,
+.workflow-card-section,
+.card-section,
+.detail-panel,
+.document-source,
+.beta-links {
+  text-align: left;
+}
+
 body::before {
   content: '';
   position: fixed;
