@@ -55,6 +55,7 @@ body {
   color: var(--text);
   line-height: 1.7;
   transition: background var(--transition), color var(--transition);
+  overflow-x: hidden;
 }
 
 body::before {
@@ -88,6 +89,11 @@ html.dark body::before {
   padding: 30px;
   max-width: 1480px;
   margin: 0 auto;
+  min-width: 0;
+}
+
+.page-shell.single-column {
+  grid-template-columns: 1fr;
 }
 
 .sidebar,
@@ -136,9 +142,22 @@ html.dark body::before {
 
 .top-cats {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
   margin-top: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.top-cats::-webkit-scrollbar {
+  height: 6px;
+}
+
+.top-cats::-webkit-scrollbar-thumb {
+  background: rgba(155, 118, 39, 0.35);
+  border-radius: 999px;
 }
 
 .top-cats .top-cat-button {
@@ -220,6 +239,11 @@ html.dark body::before {
   letter-spacing: 0.16em;
   font-size: 0.78rem;
   text-transform: uppercase;
+  min-width: 0;
+}
+
+.content-header > div {
+  min-width: 0;
 }
 
 .content-header h1 {
@@ -301,10 +325,11 @@ html.dark body::before {
 .card-grid {
   display: grid;
   gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
 .verification-card-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
 .verification-card {
@@ -326,63 +351,26 @@ html.dark body::before {
   margin-bottom: 10px;
 }
 
-  .additional-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
-    margin-top: 18px;
-  }
-
-  .info-card {
-    background: var(--surface-strong);
-    border: 1px dashed var(--border);
-    border-radius: 22px;
-    padding: 22px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .info-card h3 {
-    margin: 0;
-    font-size: 1.05rem;
-  }
-
-  .info-card p {
-    margin: 0;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-
-  .info-card .primary {
-    align-self: start;
-  }
-
-  .additional-footer {
-    margin-top: 18px;
-    padding: 18px;
-    border: 1px dashed var(--border);
-    border-radius: 20px;
-    background: var(--surface);
-    color: var(--muted);
-  }
-
   .section-header {
     display: grid;
     gap: 10px;
     margin-bottom: 18px;
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   .section-header h2 {
     font-size: 1.35rem;
     margin: 0;
     letter-spacing: 0.04em;
+    word-break: break-word;
   }
 
   .section-header p {
     margin: 0;
     color: var(--muted);
     line-height: 1.6;
+    word-break: break-word;
   }
 
   .category-accordion-panel,
@@ -410,13 +398,13 @@ html.dark body::before {
     gap: 22px;
   }
 
-  .verification-card-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .verification-card-grid,
+  .additional-grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   }
 
   .additional-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
     margin-top: 18px;
   }
@@ -453,6 +441,34 @@ html.dark body::before {
     border-radius: 20px;
     background: var(--surface);
     color: var(--muted);
+    min-width: 0;
+  }
+
+  .category-accordion-panel,
+  .verification-panel,
+  .workflow-card-section,
+  .additional-panel,
+  .grid-panel,
+  .verify-shell,
+  .panel,
+  .card,
+  .workflow-step,
+  .info-card {
+    min-width: 0;
+  }
+
+  .card-title,
+  .card-description,
+  .detail-category,
+  .detail-block-title,
+  .detail-block p,
+  .workflow-step h3,
+  .section-header h2,
+  .section-header p,
+  .info-card h3,
+  .info-card p {
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
 .search-label,
@@ -521,7 +537,7 @@ html.dark body::before {
 }
 
 .workflow-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
 .workflow-step,
@@ -668,6 +684,7 @@ pre,
   line-height: 1.7;
   white-space: pre-wrap;
   word-break: break-word;
+  min-width: 0;
 }
 
 .detail-empty-label {
@@ -731,6 +748,18 @@ pre,
 .beta-links {
   border: 1px dashed var(--border);
   background: var(--surface-strong);
+}
+
+.beta-links .panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.beta-links .panel a {
+  min-width: 0;
 }
 
 .panel {
