@@ -48,17 +48,39 @@
   word-break: break-word;
 }
 
-body > header {
+.page-header {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
   padding: 20px 32px;
+  width: 100%;
 }
 
-body > header h1,
-body > header a,
-body > header span {
+.page-header-link {
+  text-decoration: none;
+  color: inherit;
+  font-weight: 700;
+  min-width: 0;
+}
+
+.beta-chip {
+  background: #fde68a;
+  color: #92400e;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  min-width: 0;
+}
+
+.page-header .theme-toggle-panel {
+  margin-left: auto;
+}
+
+.page-header h1,
+.page-header-link,
+.beta-chip {
   min-width: 0;
 }
 

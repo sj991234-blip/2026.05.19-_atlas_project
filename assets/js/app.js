@@ -16,27 +16,8 @@ window.PromptAtlasApp = (function (data, render) {
       render.renderFilters(data.levels || [], data.models || [], state);
       renderTopCategoryButtons(state.categories);
       attachEventListeners();
-      initializeThemeMode();
       refresh();
     });
-  }
-
-  function initializeThemeMode() {
-    var themeToggle = document.getElementById('themeToggle');
-    var currentTheme = window.localStorage.getItem('promptAtlasTheme');
-    if (currentTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-      document.body.classList.add('dark');
-      if (themeToggle) themeToggle.textContent = 'Light Mode';
-    }
-    if (themeToggle) {
-      themeToggle.addEventListener('click', function () {
-        var isDark = document.documentElement.classList.toggle('dark');
-        document.body.classList.toggle('dark', isDark);
-        window.localStorage.setItem('promptAtlasTheme', isDark ? 'dark' : 'light');
-        themeToggle.textContent = isDark ? 'Light Mode' : 'Dark Mode';
-      });
-    }
   }
 
   function ensureData(cb) {

@@ -8,10 +8,13 @@
   <link rel="stylesheet" href="./assets/css/verify.css" />
 </head>
 <body>
-  <header style="padding:20px 32px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-    <a href="index.html" style="text-decoration:none; color:inherit; font-weight:700; min-width:0;">홈</a>
-    <h1 style="margin:0; font-size:1.2rem; min-width:0;">프롬프트 검증 (UI 데모)</h1>
-    <span style="margin-left:auto; background:#fde68a; color:#92400e; padding:6px 10px; border-radius:999px; font-weight:700; font-size:0.85rem; min-width:0;">Beta - UI 프리뷰</span>
+  <header class="page-header">
+    <a href="index.html" class="page-header-link">홈</a>
+    <h1>프롬프트 검증 (UI 데모)</h1>
+    <span class="beta-chip">Beta - UI 프리뷰</span>
+    <div class="theme-toggle-panel">
+      <button id="themeToggle" class="theme-toggle-button" type="button">Dark Mode</button>
+    </div>
   </header>
 
   <div class="page-shell single-column">
@@ -106,5 +109,6 @@
   </div>
 
   <script src="./assets/js/verify.js"></script>
+  <script src="./assets/js/theme.js"></script>
 </body>
 </html>
